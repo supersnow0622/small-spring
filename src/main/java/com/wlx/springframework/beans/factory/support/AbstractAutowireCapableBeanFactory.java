@@ -22,7 +22,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             addSingleton(beanName, bean);
             return bean;
         } catch (Exception e) {
-            throw new BeansException("创建对象失败", e);
+            throw new BeansException(beanName + " be created failed", e);
         }
     }
 
@@ -33,7 +33,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                 return instantiationStrategy.instantiate(beanDefinition, constructor, args);
             }
         }
-        return null;
+        return instantiationStrategy.instantiate(beanDefinition, null, null);
     }
 
     private void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
