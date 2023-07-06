@@ -49,4 +49,13 @@ public class ApiTest {
         UserService userService = context.getBean("userService", UserService.class);
         userService.queryUserInfo();
     }
+
+    @Test
+    public void testInitAndDestroy() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        context.registerShutdownHook();
+
+        UserService userService = context.getBean("userService", UserService.class);
+        userService.queryUserInfo();
+    }
 }

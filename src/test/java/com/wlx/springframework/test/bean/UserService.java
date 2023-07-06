@@ -54,4 +54,12 @@ public class UserService {
                 ", address='" + address + '\'' +
                 '}';
     }
+
+    public void init() {
+        System.out.println("init:" + UserService.class.getSimpleName());
+    }
+
+    public void destroy() {
+        System.out.println("destroy:" + UserService.class.getSimpleName());
+    }
 }

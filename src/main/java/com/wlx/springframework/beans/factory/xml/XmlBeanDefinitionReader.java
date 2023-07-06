@@ -76,9 +76,14 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             String id = beanElement.getAttribute("id");
             String beanName = beanElement.getAttribute("name");
             String className = beanElement.getAttribute("class");
+            String initMethodName = beanElement.getAttribute("init-method");
+            String destroyMethodName = beanElement.getAttribute("destroy-method");
 
-            beanName = StrUtil.isEmpty(id) ? beanName : id;
             Class<?> clazz = Class.forName(className);
+            beanName = StrUtil.isEmpty(id) ? beanName : id;
+            if (StrUtil.isEmpty(beanName)) {
+                beanName = StrUtil.lowerFirst(clazz.getSimpleName());
+            }
 
             NodeList propertyNodes = beanElement.getChildNodes();
             PropertyValues propertyValues = new PropertyValues();
@@ -101,7 +106,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             if (getRegistry().containsBeanDefinition(beanName)) {
                 throw new BeansException("Duplicate beanName[" + beanName + "] is not allowed");
             }
-            BeanDefinition beanDefinition = new BeanDefinition(clazz, propertyValues);
+            BeanDefinition beanDefinition = new BeanDefinition(clazz, propertyValues, initMethodName, destroyMethodName);
             getRegistry().registerBeanDefinition(beanName, beanDefinition);
         }
     }
