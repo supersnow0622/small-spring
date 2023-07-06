@@ -1,6 +1,16 @@
 package com.wlx.springframework.test.bean;
 
-public class UserService {
+import com.wlx.springframework.beans.factory.BeanClassLoaderAware;
+import com.wlx.springframework.beans.factory.BeanFactory;
+import com.wlx.springframework.beans.factory.BeanFactoryAware;
+import com.wlx.springframework.beans.factory.BeanNameAware;
+import com.wlx.springframework.context.ApplicationContext;
+import com.wlx.springframework.context.ApplicationContextAware;
+
+public class UserService implements BeanNameAware, BeanFactoryAware, BeanClassLoaderAware, ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
+    private BeanFactory beanFactory;
 
     private UserDao userDao;
 
@@ -61,5 +71,25 @@ public class UserService {
 
     public void destroy() {
         System.out.println("destroy:" + UserService.class.getSimpleName());
+    }
+
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+        System.out.println("classLoader is:" + classLoader);
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) {
+        System.out.println("beanFactory is:" + beanFactory);
+    }
+
+    @Override
+    public void setBeanName(String beanName) {
+        System.out.println("beanName is:" + beanName);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        System.out.println("applicationContext is:" + applicationContext);
     }
 }

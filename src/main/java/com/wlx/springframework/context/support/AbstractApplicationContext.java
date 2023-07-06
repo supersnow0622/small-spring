@@ -4,6 +4,7 @@ import com.wlx.springframework.beans.BeansException;
 import com.wlx.springframework.beans.factory.ConfigurableListableBeanFactory;
 import com.wlx.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import com.wlx.springframework.beans.factory.config.BeanPostProcessor;
+import com.wlx.springframework.context.ApplicationContextAwareProcessor;
 import com.wlx.springframework.context.ConfigurableApplicationContext;
 import com.wlx.springframework.core.io.DefaultResourceLoader;
 
@@ -19,13 +20,16 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
         // 2.获取工厂
         ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 
-        // 3.执行自定义配置BeanFactoryPostProcessor的实现类
+        // 3.注册ApplicationContextAware
+        beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
+
+        // 4.执行自定义配置BeanFactoryPostProcessor的实现类
         invokeBeanFactoryPostProcessors(beanFactory);
 
-        // 4.添加自定义配置BeanPostProcessor的实现类
+        // 5.添加自定义配置BeanPostProcessor的实现类
         registerBeanPostProcessors(beanFactory);
 
-        // 5.实例化单例Bean对象
+        // 6.实例化单例Bean对象
         beanFactory.preInstantiateSingletons();
     }
 

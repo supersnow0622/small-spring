@@ -3,6 +3,7 @@ package com.wlx.springframework.beans.factory.support;
 import com.wlx.springframework.beans.factory.config.BeanDefinition;
 import com.wlx.springframework.beans.factory.config.BeanPostProcessor;
 import com.wlx.springframework.beans.factory.config.ConfigurableBeanFactory;
+import com.wlx.springframework.utils.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,5 +47,9 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     public List<BeanPostProcessor> getBeanPostProcessorList() {
         return beanPostProcessorList;
+    }
+
+    public ClassLoader getBeanClassLoader() {
+        return ClassUtils.getDefaultClassLoader();
     }
 }
