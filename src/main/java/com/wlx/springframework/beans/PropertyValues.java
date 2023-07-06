@@ -1,4 +1,6 @@
-package com.wlx.springframework.beans.factory;
+package com.wlx.springframework.beans;
+
+import com.wlx.springframework.beans.PropertyValue;
 
 import java.util.ArrayList;
 import java.util.List;

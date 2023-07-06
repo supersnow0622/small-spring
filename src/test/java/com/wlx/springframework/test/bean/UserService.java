@@ -4,10 +4,14 @@ public class UserService {
 
     private UserDao userDao;
 
-    private String uId = "xxx";
+    private String uId;
+
+    private String company;
+
+    private String address;
 
     public void queryUserInfo() {
-        System.out.println("查询用户信息:" + userDao.queryUserName(uId));
+        System.out.println("查询用户信息:" + this.toString());
     }
 
     public UserDao getUserDao() {
@@ -24,5 +28,30 @@ public class UserService {
 
     public void setuId(String uId) {
         this.uId = uId;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "UserService{" +
+                "uId='" + uId + '\'' +
+                ", company='" + company + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 }

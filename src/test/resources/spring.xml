@@ -5,5 +5,11 @@
     <bean id="userService" class="com.wlx.springframework.test.bean.UserService">
         <property name="uId" value="10001"/>
         <property name="userDao" ref="userDao"/>
+        <property name="company" value="腾讯"/>
+        <property name="address" value="深圳"/>
     </bean>
+
+
+    <bean id="myBeanFactoryPostProcessor" class="com.wlx.springframework.test.common.MyBeanFactoryPostProcessor"/>
+    <bean id="myBeanPostProcessor" class="com.wlx.springframework.test.common.MyBeanPostProcessor"/>
 </beans>

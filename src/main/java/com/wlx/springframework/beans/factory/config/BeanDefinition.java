@@ -1,6 +1,6 @@
 package com.wlx.springframework.beans.factory.config;
 
-import com.wlx.springframework.beans.factory.PropertyValues;
+import com.wlx.springframework.beans.PropertyValues;
 
 public class BeanDefinition {
 

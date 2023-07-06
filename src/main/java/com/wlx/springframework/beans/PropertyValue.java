@@ -1,4 +1,4 @@
-package com.wlx.springframework.beans.factory;
+package com.wlx.springframework.beans;
 
 public class PropertyValue {
 

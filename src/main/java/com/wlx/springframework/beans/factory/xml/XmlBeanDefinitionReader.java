@@ -3,8 +3,8 @@ package com.wlx.springframework.beans.factory.xml;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.XmlUtil;
 import com.wlx.springframework.beans.BeansException;
-import com.wlx.springframework.beans.factory.PropertyValue;
-import com.wlx.springframework.beans.factory.PropertyValues;
+import com.wlx.springframework.beans.PropertyValue;
+import com.wlx.springframework.beans.PropertyValues;
 import com.wlx.springframework.beans.factory.config.BeanDefinition;
 import com.wlx.springframework.beans.factory.config.BeanReference;
 import com.wlx.springframework.beans.factory.support.AbstractBeanDefinitionReader;
@@ -50,6 +50,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     public void loadBeanDefinitions(String location) {
         Resource resource = getResourceLoader().getResource(location);
         loadBeanDefinitions(resource);
+    }
+
+    public void loadBeanDefinitions(String[] locations) {
+        for (String location : locations) {
+            loadBeanDefinitions(location);
+        }
     }
 
     public void doLoadBeanDefinitions(InputStream inputStream) throws ClassNotFoundException {
