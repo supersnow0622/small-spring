@@ -30,7 +30,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             // 注册销毁方法
             registerDisposableBeanIfNecessary(bean, beanName, beanDefinition);
 
-            addSingleton(beanName, bean);
+            if (beanDefinition.isSingleton()) {
+                addSingleton(beanName, bean);
+            }
             return bean;
         } catch (Exception e) {
             throw new BeansException(beanName + " be created failed", e);
@@ -129,6 +131,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     }
 
     private void registerDisposableBeanIfNecessary(Object bean, String beanName, BeanDefinition beanDefinition) {
+        if (beanDefinition.isPrototype()) {
+            return;
+        }
+
         if ((bean instanceof DisposableBean) || StrUtil.isNotEmpty(beanDefinition.getDestroyMethodName())) {
             registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
         }

@@ -12,6 +12,12 @@ public class BeanDefinition {
 
     private String destroyMethodName;
 
+    private String scope = ConfigurableBeanFactory.SCOPE_SINGLETON;
+
+    private boolean singleton = true;
+
+    private boolean prototype = false;
+
     public BeanDefinition(Class beanClass) {
         this.beanClass = beanClass;
         this.propertyValues = new PropertyValues();
@@ -43,5 +49,19 @@ public class BeanDefinition {
 
     public String getDestroyMethodName() {
         return destroyMethodName;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+        this.singleton = scope.equals(ConfigurableBeanFactory.SCOPE_SINGLETON);
+        this.prototype = scope.equals(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
+    }
+
+    public boolean isSingleton() {
+        return singleton;
+    }
+
+    public boolean isPrototype() {
+        return prototype;
     }
 }

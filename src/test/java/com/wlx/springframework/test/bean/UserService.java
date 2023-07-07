@@ -20,8 +20,11 @@ public class UserService implements BeanNameAware, BeanFactoryAware, BeanClassLo
 
     private String address;
 
+    private IBodyDao bodyDao;
+
     public void queryUserInfo() {
         System.out.println("查询用户信息:" + this.toString());
+        System.out.println(bodyDao.getBodyInfo(uId));
     }
 
     public UserDao getUserDao() {

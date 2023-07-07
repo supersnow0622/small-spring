@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
+    protected Object NULL_OBJECT = new Object();
+
     private Map<String, Object> singletonObjects = new ConcurrentHashMap<>();
 
     private Map<String, DisposableBeanAdapter> disposableBeanMap = new ConcurrentHashMap<>();

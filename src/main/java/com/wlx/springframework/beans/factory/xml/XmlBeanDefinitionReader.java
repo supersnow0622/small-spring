@@ -2,6 +2,7 @@ package com.wlx.springframework.beans.factory.xml;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.XmlUtil;
+import com.sun.xml.internal.ws.util.StringUtils;
 import com.wlx.springframework.beans.BeansException;
 import com.wlx.springframework.beans.PropertyValue;
 import com.wlx.springframework.beans.PropertyValues;
@@ -78,6 +79,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
             String className = beanElement.getAttribute("class");
             String initMethodName = beanElement.getAttribute("init-method");
             String destroyMethodName = beanElement.getAttribute("destroy-method");
+            String scope = beanElement.getAttribute("scope");
 
             Class<?> clazz = Class.forName(className);
             beanName = StrUtil.isEmpty(id) ? beanName : id;
@@ -107,6 +109,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
                 throw new BeansException("Duplicate beanName[" + beanName + "] is not allowed");
             }
             BeanDefinition beanDefinition = new BeanDefinition(clazz, propertyValues, initMethodName, destroyMethodName);
+            if (StrUtil.isNotEmpty(scope)) {
+                beanDefinition.setScope(scope);
+            }
             getRegistry().registerBeanDefinition(beanName, beanDefinition);
         }
     }
