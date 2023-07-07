@@ -9,4 +9,8 @@ public class ClassUtils {
         }
         return classLoader;
     }
+
+    public static boolean isCglibProxyClass(Class<?> clazz) {
+        return clazz!= null && clazz.getName().contains("$$");
+    }
 }

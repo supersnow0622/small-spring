@@ -9,6 +9,7 @@ import com.wlx.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import com.wlx.springframework.context.support.ClassPathXmlApplicationContext;
 import com.wlx.springframework.test.bean.UserDao;
 import com.wlx.springframework.test.bean.UserService;
+import com.wlx.springframework.test.event.CustomEvent;
 import org.junit.Test;
 
 public class ApiTest {
@@ -69,5 +70,12 @@ public class ApiTest {
 
         System.out.println(userDao1);
         System.out.println(userDao2);
+    }
+
+    @Test
+    public void testEvent() {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        applicationContext.publicEvent(new CustomEvent(applicationContext, 1019129009086763L, "成功了！"));
+        applicationContext.registerShutdownHook();
     }
 }

@@ -19,7 +19,6 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
         return singletonObjects.get(beanName);
     }
 
-    @Override
     public void destroySingletons() {
         Object[] disposableBeanNameArray =  disposableBeanMap.keySet().toArray();
         for (int i = 0; i < disposableBeanNameArray.length; i++) {
@@ -33,8 +32,8 @@ public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
         }
     }
 
-    public void addSingleton(String beanName, Object singletonObject) {
-        singletonObjects.put(beanName, singletonObject);
+    public void registerSingleton(String beanName, Object singletonBean) {
+        singletonObjects.put(beanName, singletonBean);
     }
 
     public void registerDisposableBean(String beanName, DisposableBeanAdapter disposableBeanAdapter) {

@@ -12,6 +12,10 @@
 
     <bean id="bodyDao" class="com.wlx.springframework.test.bean.ProxyBeanFactory"/>
 
-<!--    <bean id="myBeanFactoryPostProcessor" class="com.wlx.springframework.test.common.MyBeanFactoryPostProcessor"/>-->
-<!--    <bean id="myBeanPostProcessor" class="com.wlx.springframework.test.common.MyBeanPostProcessor"/>-->
+    <bean id="myBeanFactoryPostProcessor" class="com.wlx.springframework.test.common.MyBeanFactoryPostProcessor"/>
+    <bean id="myBeanPostProcessor" class="com.wlx.springframework.test.common.MyBeanPostProcessor"/>
+
+    <bean class="com.wlx.springframework.test.event.ContextClosedEventListener"/>
+    <bean class="com.wlx.springframework.test.event.ContextRefreshedEventListener"/>
+    <bean class="com.wlx.springframework.test.event.CustomEventListener"/>
 </beans>
