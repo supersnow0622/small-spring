@@ -1,5 +1,12 @@
 package com.wlx.springframework.test;
 
+import com.wlx.springframework.aop.AdvisedSupport;
+import com.wlx.springframework.aop.MethodMatcher;
+import com.wlx.springframework.aop.TargetSource;
+import com.wlx.springframework.aop.aspectj.AspectJExpressionPointcut;
+import com.wlx.springframework.aop.framework.Cglib2AopProxy;
+import com.wlx.springframework.aop.framework.JdkDynamicAopProxy;
+import com.wlx.springframework.aop.framework.ReflectiveMethodInvocation;
 import com.wlx.springframework.beans.PropertyValue;
 import com.wlx.springframework.beans.PropertyValues;
 import com.wlx.springframework.beans.factory.config.BeanDefinition;
@@ -7,10 +14,15 @@ import com.wlx.springframework.beans.factory.config.BeanReference;
 import com.wlx.springframework.beans.factory.support.DefaultListableBeanFactory;
 import com.wlx.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import com.wlx.springframework.context.support.ClassPathXmlApplicationContext;
-import com.wlx.springframework.test.bean.UserDao;
-import com.wlx.springframework.test.bean.UserService;
+import com.wlx.springframework.test.bean.*;
 import com.wlx.springframework.test.event.CustomEvent;
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 public class ApiTest {
 
@@ -77,5 +89,61 @@ public class ApiTest {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
         applicationContext.publicEvent(new CustomEvent(applicationContext, 1019129009086763L, "成功了！"));
         applicationContext.registerShutdownHook();
+    }
+
+    @Test
+    public void testProxyMethod() {
+        Object targetObj = new ActivityService();
+
+        IActivityService proxy = (IActivityService) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
+                targetObj.getClass().getInterfaces(), new InvocationHandler() {
+
+                    MethodMatcher methodMatcher = new AspectJExpressionPointcut("execution(* com.wlx.springframework.test.bean.IActivityService.*(..))");
+
+                    @Override
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                        if (methodMatcher.match(method, targetObj.getClass())) {
+                            MethodInterceptor methodInterceptor = new MethodInterceptor() {
+                                @Override
+                                public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+                                    long start = System.currentTimeMillis();
+                                    try {
+                                        return methodInvocation.proceed();
+                                    } finally {
+                                        System.out.println("监控 - Begin By AOP");
+                                        System.out.println("方法名称：" + methodInvocation.getMethod().getName());
+                                        System.out.println("方法耗时：" + (System.currentTimeMillis() - start) + "ms");
+                                        System.out.println("监控 - End\r\n");
+                                    }
+                                }
+                            };
+                            methodInterceptor.invoke(new ReflectiveMethodInvocation(targetObj, method, args));
+                        }
+
+                        return method.invoke(targetObj, args);
+                    }
+                });
+        System.out.println(proxy.queryActivityInfo());
+    }
+
+    @Test
+    public void test_dynamic() {
+        // 目标对象
+        IActivityService activityService = new ActivityService();
+        // 组装代理信息
+        AdvisedSupport advisedSupport = new AdvisedSupport();
+        advisedSupport.setTargetSource(new TargetSource(activityService));
+        advisedSupport.setMethodInterceptor(new ActivityServiceInterceptor());
+        advisedSupport.setMethodMatcher(new AspectJExpressionPointcut("execution(* com.wlx.springframework.test.bean.IActivityService.*(..))"));
+
+        // 代理对象(JdkDynamicAopProxy)
+        IActivityService proxy_jdk = (IActivityService) new JdkDynamicAopProxy(advisedSupport).getProxy();
+        // 测试调用
+        System.out.println("测试结果：" + proxy_jdk.queryActivityInfo());
+
+        // 代理对象(Cglib2AopProxy)
+        IActivityService proxy_cglib = (IActivityService) new Cglib2AopProxy(advisedSupport).getProxy();
+        // 测试调用
+        System.out.println("测试结果：" + proxy_cglib.register("花花"));
     }
 }
