@@ -4,5 +4,5 @@ public interface Pointcut {
 
     ClassFilter getClassFilter();
 
-    MethodMatcher getMethodMatch();
+    MethodMatcher getMethodMatcher();
 }

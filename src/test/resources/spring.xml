@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <beans>
-    <bean id="userDao" class="com.wlx.springframework.test.bean.UserDao" scope="prototype"/>
+<!--    <bean id="userDao" class="com.wlx.springframework.test.bean.UserDao" scope="prototype"/>-->
 
-    <bean id="userService" class="com.wlx.springframework.test.bean.UserService" init-method="init" destroy-method="destroy">
-        <property name="uId" value="10001"/>
-        <property name="userDao" ref="userDao"/>
-        <property name="company" value="腾讯"/>
-        <property name="address" value="深圳"/>
-        <property name="bodyDao" ref="bodyDao"/>
+<!--    <bean id="userService" class="com.wlx.springframework.test.bean.UserService" init-method="init" destroy-method="destroy">-->
+<!--        <property name="uId" value="10001"/>-->
+<!--        <property name="userDao" ref="userDao"/>-->
+<!--        <property name="company" value="腾讯"/>-->
+<!--        <property name="address" value="深圳"/>-->
+<!--        <property name="bodyDao" ref="bodyDao"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="bodyDao" class="com.wlx.springframework.test.bean.ProxyBeanFactory"/>-->
+
+<!--    <bean id="myBeanFactoryPostProcessor" class="com.wlx.springframework.test.common.MyBeanFactoryPostProcessor"/>-->
+<!--    <bean id="myBeanPostProcessor" class="com.wlx.springframework.test.common.MyBeanPostProcessor"/>-->
+
+<!--    <bean class="com.wlx.springframework.test.event.ContextClosedEventListener"/>-->
+<!--    <bean class="com.wlx.springframework.test.event.ContextRefreshedEventListener"/>-->
+<!--    <bean class="com.wlx.springframework.test.event.CustomEventListener"/>-->
+
+    <bean id="activityService" class="com.wlx.springframework.test.bean.ActivityService"/>
+    <bean class="com.wlx.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+    <bean id="beforeAdvice" class="com.wlx.springframework.test.bean.ActivityServiceBeforeAdvice"/>
+    <bean id = "methodInterceptor" class="com.wlx.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor">
+        <property name="methodBeforeAdvice" ref="beforeAdvice"/>
     </bean>
-
-    <bean id="bodyDao" class="com.wlx.springframework.test.bean.ProxyBeanFactory"/>
-
-    <bean id="myBeanFactoryPostProcessor" class="com.wlx.springframework.test.common.MyBeanFactoryPostProcessor"/>
-    <bean id="myBeanPostProcessor" class="com.wlx.springframework.test.common.MyBeanPostProcessor"/>
-
-    <bean class="com.wlx.springframework.test.event.ContextClosedEventListener"/>
-    <bean class="com.wlx.springframework.test.event.ContextRefreshedEventListener"/>
-    <bean class="com.wlx.springframework.test.event.CustomEventListener"/>
+    <bean id="pointcutAdvisor" class="com.wlx.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
+        <property name="expression" value="execution(* com.wlx.springframework.test.bean.IActivityService.*(..))"/>
+        <property name="advice" ref="methodInterceptor"/>
+    </bean>
 </beans>

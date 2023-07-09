@@ -11,6 +11,9 @@ public class AdvisedSupport {
     // 方法匹配器
     private MethodMatcher methodMatcher;
 
+    // 是否代理目标类，是则使用cglib代理，否则使用jdk代理
+    private boolean proxyTargetClass;
+
     public void setTargetSource(TargetSource targetSource) {
         this.targetSource = targetSource;
     }
@@ -33,5 +36,13 @@ public class AdvisedSupport {
 
     public MethodMatcher getMethodMatcher() {
         return methodMatcher;
+    }
+
+    public boolean isProxyTargetClass() {
+        return proxyTargetClass;
+    }
+
+    public void setProxyTargetClass(boolean proxyTargetClass) {
+        this.proxyTargetClass = proxyTargetClass;
     }
 }

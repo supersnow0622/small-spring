@@ -146,4 +146,12 @@ public class ApiTest {
         // 测试调用
         System.out.println("测试结果：" + proxy_cglib.register("花花"));
     }
+
+    @Test
+    public void testAop() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring.xml");
+
+        IActivityService activityService = context.getBean("activityService", IActivityService.class);
+        System.out.println(activityService.queryActivityInfo());
+    }
 }

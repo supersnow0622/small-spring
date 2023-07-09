@@ -2,14 +2,12 @@ package com.wlx.springframework.beans.factory.support;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.wlx.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import com.wlx.springframework.beans.BeansException;
 import com.wlx.springframework.beans.PropertyValue;
 import com.wlx.springframework.beans.PropertyValues;
 import com.wlx.springframework.beans.factory.*;
-import com.wlx.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import com.wlx.springframework.beans.factory.config.BeanDefinition;
-import com.wlx.springframework.beans.factory.config.BeanPostProcessor;
-import com.wlx.springframework.beans.factory.config.BeanReference;
+import com.wlx.springframework.beans.factory.config.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -22,7 +20,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     @Override
     public Object createBean(String beanName, BeanDefinition beanDefinition, Object... args) {
         try {
-            Object bean = createBeanInstance(beanName, beanDefinition, args);
+            // 判断是否有代理类
+            Object bean = resolveBeforeInstantiation(beanName, beanDefinition);
+            if (null != bean)
+                return bean;
+            bean = createBeanInstance(beanName, beanDefinition, args);
             applyPropertyValues(beanName, bean, beanDefinition);
             // 执行bean的初始化方法和BeanPostProcessor的前置和后置方法
             bean = initializeBean(bean, beanName, beanDefinition);
@@ -139,4 +141,25 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             registerDisposableBean(beanName, new DisposableBeanAdapter(bean, beanName, beanDefinition));
         }
     }
+
+    protected Object resolveBeforeInstantiation(String beanName, BeanDefinition beanDefinition) {
+        Object bean = applyBeanPostProcessorsBeforeInitialization(beanDefinition.getBeanClass(), beanName);
+        if (null != bean) {
+            return applyBeanPostProcessorsAfterInitialization(bean, beanName);
+        }
+        return bean;
+    }
+
+    public Object applyBeanPostProcessorsBeforeInitialization(Class<?> clazz, String beanName) {
+        List<BeanPostProcessor> beanPostProcessorList = getBeanPostProcessorList();
+        for (BeanPostProcessor beanPostProcessor : beanPostProcessorList) {
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+                Object bean = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).postBeforeInstantiation(clazz, beanName);
+                if (null != bean) return bean;
+            }
+        }
+        return null;
+    }
+
+
 }
