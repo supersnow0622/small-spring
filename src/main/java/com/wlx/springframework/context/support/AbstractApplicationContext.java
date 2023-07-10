@@ -4,7 +4,6 @@ import com.wlx.springframework.beans.BeansException;
 import com.wlx.springframework.beans.factory.ConfigurableListableBeanFactory;
 import com.wlx.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import com.wlx.springframework.beans.factory.config.BeanPostProcessor;
-import com.wlx.springframework.context.ApplicationContextAwareProcessor;
 import com.wlx.springframework.context.ApplicationEvent;
 import com.wlx.springframework.context.ApplicationListener;
 import com.wlx.springframework.context.ConfigurableApplicationContext;
@@ -94,6 +93,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
     @Override
     public <T> T getBean(String beanName, Class<T> requiredType) {
         return getBeanFactory().getBean(beanName, requiredType);
+    }
+
+    @Override
+    public <T> T getBean(Class<T> requiredType) throws BeansException {
+        return getBeanFactory().getBean(requiredType);
     }
 
     @Override

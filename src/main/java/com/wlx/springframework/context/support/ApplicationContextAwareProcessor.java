@@ -1,6 +1,8 @@
-package com.wlx.springframework.context;
+package com.wlx.springframework.context.support;
 
 import com.wlx.springframework.beans.factory.config.BeanPostProcessor;
+import com.wlx.springframework.context.ApplicationContext;
+import com.wlx.springframework.context.ApplicationContextAware;
 
 public class ApplicationContextAwareProcessor implements BeanPostProcessor {
 

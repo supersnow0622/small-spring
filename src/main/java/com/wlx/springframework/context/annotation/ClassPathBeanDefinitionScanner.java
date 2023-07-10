@@ -1,6 +1,7 @@
 package com.wlx.springframework.context.annotation;
 
 import cn.hutool.core.util.StrUtil;
+import com.wlx.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import com.wlx.springframework.beans.factory.config.BeanDefinition;
 import com.wlx.springframework.beans.factory.support.BeanDefinitionRegistry;
 import com.wlx.springframework.stereotype.Component;
@@ -26,6 +27,9 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
                 registry.registerBeanDefinition(determineBeanName(beanDefinition), beanDefinition);
             }
         }
+
+        registry.registerBeanDefinition("com.wlx.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor",
+                new BeanDefinition(AutowiredAnnotationBeanPostProcessor.class));
     }
 
     private String resolveBeanScope(BeanDefinition beanDefinition) {

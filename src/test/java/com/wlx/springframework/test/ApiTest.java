@@ -170,4 +170,11 @@ public class ApiTest {
         ActivityService activityService = (ActivityService) context.getBean("activityService");
         System.out.println(activityService);
     }
+
+    @Test
+    public void testAutowired() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring-autowired.xml");
+        BrandService brandService = (BrandService) context.getBean("brandService");
+        System.out.println(brandService);
+    }
 }
