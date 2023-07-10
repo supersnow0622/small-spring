@@ -6,7 +6,9 @@ import com.wlx.springframework.beans.PropertyValues;
 import com.wlx.springframework.beans.factory.ConfigurableListableBeanFactory;
 import com.wlx.springframework.beans.factory.config.BeanDefinition;
 import com.wlx.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import com.wlx.springframework.stereotype.Component;
 
+@Component
 public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor  {
 
     @Override

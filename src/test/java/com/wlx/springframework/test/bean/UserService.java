@@ -6,6 +6,8 @@ import com.wlx.springframework.beans.factory.BeanFactoryAware;
 import com.wlx.springframework.beans.factory.BeanNameAware;
 import com.wlx.springframework.context.ApplicationContext;
 import com.wlx.springframework.context.ApplicationContextAware;
+import com.wlx.springframework.stereotype.Component;
+
 
 public class UserService implements BeanNameAware, BeanFactoryAware, BeanClassLoaderAware, ApplicationContextAware {
 
@@ -24,6 +26,9 @@ public class UserService implements BeanNameAware, BeanFactoryAware, BeanClassLo
 
     public void queryUserInfo() {
         System.out.println("查询用户信息:" + this.toString());
+    }
+
+    public void queryBodyInfo() {
         System.out.println(bodyDao.getBodyInfo(uId));
     }
 

@@ -2,13 +2,13 @@
 <beans>
 <!--    <bean id="userDao" class="com.wlx.springframework.test.bean.UserDao" scope="prototype"/>-->
 
-<!--    <bean id="userService" class="com.wlx.springframework.test.bean.UserService" init-method="init" destroy-method="destroy">-->
-<!--        <property name="uId" value="10001"/>-->
-<!--        <property name="userDao" ref="userDao"/>-->
-<!--        <property name="company" value="腾讯"/>-->
-<!--        <property name="address" value="深圳"/>-->
-<!--        <property name="bodyDao" ref="bodyDao"/>-->
-<!--    </bean>-->
+    <bean id="userService" class="com.wlx.springframework.test.bean.UserService" init-method="init" destroy-method="destroy">
+        <property name="uId" value="10001"/>
+        <property name="userDao" ref="userDao"/>
+        <property name="company" value="腾讯"/>
+        <property name="address" value="深圳"/>
+        <property name="bodyDao" ref="bodyDao"/>
+    </bean>
 
 <!--    <bean id="bodyDao" class="com.wlx.springframework.test.bean.ProxyBeanFactory"/>-->
 
@@ -19,7 +19,9 @@
 <!--    <bean class="com.wlx.springframework.test.event.ContextRefreshedEventListener"/>-->
 <!--    <bean class="com.wlx.springframework.test.event.CustomEventListener"/>-->
 
-    <bean id="activityService" class="com.wlx.springframework.test.bean.ActivityService"/>
+
+    <component-scan base-package="com.wlx.springframework.test.bean,com.wlx.springframework.test.common,com.wlx.springframework.test.event"/>
+
     <bean class="com.wlx.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
     <bean id="beforeAdvice" class="com.wlx.springframework.test.bean.ActivityServiceBeforeAdvice"/>
     <bean id = "methodInterceptor" class="com.wlx.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor">

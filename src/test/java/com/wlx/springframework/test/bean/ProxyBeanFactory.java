@@ -1,13 +1,14 @@
 package com.wlx.springframework.test.bean;
 
 import com.wlx.springframework.beans.factory.FactoryBean;
+import com.wlx.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
-
+@Component("bodyDao")
 public class ProxyBeanFactory implements FactoryBean<IBodyDao> {
     @Override
     public IBodyDao getObject() throws Exception {

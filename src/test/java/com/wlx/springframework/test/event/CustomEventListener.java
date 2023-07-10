@@ -1,9 +1,10 @@
 package com.wlx.springframework.test.event;
 
 import com.wlx.springframework.context.ApplicationListener;
+import com.wlx.springframework.stereotype.Component;
 
 import java.util.Date;
-
+@Component
 public class CustomEventListener implements ApplicationListener<CustomEvent> {
 
     @Override

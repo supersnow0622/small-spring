@@ -1,8 +1,14 @@
 package com.wlx.springframework.test.bean;
 
+import com.wlx.springframework.stereotype.Component;
+
 import java.util.Random;
 
+@Component("activityService")
 public class ActivityService implements IActivityService {
+
+    private String token;
+
     @Override
     public String queryActivityInfo() {
         try {
@@ -21,5 +27,20 @@ public class ActivityService implements IActivityService {
             e.printStackTrace();
         }
         return "注册用户：" + userName + " success！";
+    }
+
+    @Override
+    public String toString() {
+        return "ActivityService{" +
+                "token='" + token + '\'' +
+                '}';
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

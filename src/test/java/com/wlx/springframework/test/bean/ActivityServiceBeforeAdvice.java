@@ -2,6 +2,7 @@ package com.wlx.springframework.test.bean;
 
 
 import com.wlx.springframework.aop.MethodBeforeAdvice;
+import com.wlx.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 

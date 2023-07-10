@@ -85,6 +85,15 @@ public class ApiTest {
     }
 
     @Test
+    public void testFactoryBean() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        context.registerShutdownHook();;
+
+        UserService userService = context.getBean("userService", UserService.class);
+        userService.queryBodyInfo();
+    }
+
+    @Test
     public void testEvent() {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
         applicationContext.publicEvent(new CustomEvent(applicationContext, 1019129009086763L, "成功了！"));
@@ -153,5 +162,12 @@ public class ApiTest {
 
         IActivityService activityService = context.getBean("activityService", IActivityService.class);
         System.out.println(activityService.queryActivityInfo());
+    }
+
+    @Test
+    public void testPropertyPlaceholder() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring-property.xml");
+        ActivityService activityService = (ActivityService) context.getBean("activityService");
+        System.out.println(activityService);
     }
 }

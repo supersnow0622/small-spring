@@ -1,8 +1,9 @@
 package com.wlx.springframework.test.common;
 
 import com.wlx.springframework.beans.factory.config.BeanPostProcessor;
+import com.wlx.springframework.stereotype.Component;
 import com.wlx.springframework.test.bean.UserService;
-
+@Component
 public class MyBeanPostProcessor implements BeanPostProcessor {
 
     @Override
