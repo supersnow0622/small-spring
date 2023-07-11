@@ -15,8 +15,6 @@ public class TargetSource {
     }
 
     public Class<?>[] getTargetClass() {
-        Class<?> clazz = this.target.getClass();
-        clazz = ClassUtils.isCglibProxyClass(clazz) ? clazz.getSuperclass() : clazz;
-        return clazz.getInterfaces();
+        return this.target.getClass().getInterfaces();
     }
 }

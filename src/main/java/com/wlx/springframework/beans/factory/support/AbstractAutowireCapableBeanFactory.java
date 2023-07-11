@@ -26,6 +26,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
                 return bean;
             // 实例化bean
             bean = createBeanInstance(beanName, beanDefinition, args);
+
+            // 提前暴漏半成品的bean
+            if (beanDefinition.isSingleton()) {
+                Object finalBean = bean;
+                addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, beanDefinition, finalBean));
+            }
+
             // 在设置 Bean 属性之前，允许 BeanPostProcessor 修改属性值
             applyBeanPostProcessorsBeforeApplyingPropertyValues(beanName, bean, beanDefinition);
             // 给 Bean 填充属性
@@ -36,13 +43,29 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
             // 注册销毁方法
             registerDisposableBeanIfNecessary(bean, beanName, beanDefinition);
 
+            Object exposedObject = bean;
             if (beanDefinition.isSingleton()) {
-                registerSingleton(beanName, bean);
+                // 获取代理对象
+                exposedObject = getSingleton(beanName);
+                registerSingleton(beanName, exposedObject);
             }
-            return bean;
+            return exposedObject;
         } catch (Exception e) {
             throw new BeansException(beanName + " be created failed", e);
         }
+    }
+
+    protected Object getEarlyBeanReference(String beanName, BeanDefinition beanDefinition, Object bean) {
+        Object exportedObject = bean;
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessorList()) {
+            if (beanPostProcessor instanceof InstantiationAwareBeanPostProcessor) {
+                exportedObject = ((InstantiationAwareBeanPostProcessor) beanPostProcessor).getEarlyBeanReference(exportedObject, beanName);
+                if (exportedObject == null) {
+                    return null;
+                }
+            }
+        }
+        return exportedObject;
     }
 
     private void applyBeanPostProcessorsBeforeApplyingPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {

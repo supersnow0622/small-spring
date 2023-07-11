@@ -1,5 +1,6 @@
 package com.wlx.springframework.beans.factory.annotation;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.wlx.springframework.beans.BeansException;
 import com.wlx.springframework.beans.PropertyValue;
 import com.wlx.springframework.beans.PropertyValues;
