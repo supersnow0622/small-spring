@@ -19,6 +19,7 @@ public class Cglib2AopProxy implements AopProxy, MethodInterceptor {
     public Object getProxy() {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(advisedSupport.getTargetSource().getTarget().getClass());
+        enhancer.setInterfaces(advisedSupport.getTargetSource().getTargetClass());
         enhancer.setCallback(this);
         return enhancer.create();
     }

@@ -177,4 +177,13 @@ public class ApiTest {
         BrandService brandService = (BrandService) context.getBean("brandService");
         System.out.println(brandService);
     }
+
+    @Test
+    public void testAopProperty() {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring.xml");
+
+        IActivityService activityService = context.getBean("activityService", IActivityService.class);
+        System.out.println(activityService.queryActivityInfo());
+        System.out.println(activityService);
+    }
 }

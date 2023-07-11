@@ -1,5 +1,6 @@
 package com.wlx.springframework.test.bean;
 
+import com.wlx.springframework.beans.factory.annotation.Value;
 import com.wlx.springframework.stereotype.Component;
 
 import java.util.Random;
@@ -7,6 +8,7 @@ import java.util.Random;
 @Component("activityService")
 public class ActivityService implements IActivityService {
 
+    @Value("${token}")
     private String token;
 
     @Override
