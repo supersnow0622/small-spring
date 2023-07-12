@@ -4,6 +4,8 @@ import com.wlx.springframework.beans.BeansException;
 import com.wlx.springframework.beans.factory.ConfigurableListableBeanFactory;
 import com.wlx.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import com.wlx.springframework.beans.factory.config.BeanPostProcessor;
+import com.wlx.springframework.beans.factory.support.BeanDefinitionRegistry;
+import com.wlx.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import com.wlx.springframework.context.ApplicationEvent;
 import com.wlx.springframework.context.ApplicationListener;
 import com.wlx.springframework.context.ConfigurableApplicationContext;
@@ -58,6 +60,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
     private void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
         Map<String, BeanFactoryPostProcessor> beanFactoryPostProcessorMap = getBeansOfType(BeanFactoryPostProcessor.class);
+
+        if (beanFactory instanceof BeanDefinitionRegistry) {
+            BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+            for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessorMap.values()) {
+                if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
+                    BeanDefinitionRegistryPostProcessor registryPostProcessor = (BeanDefinitionRegistryPostProcessor) postProcessor;
+                    registryPostProcessor.postProcessBeanDefinitionRegistry(registry);
+                }
+            }
+        }
+
         beanFactoryPostProcessorMap.values().forEach(x -> x.postProcessBeanFactory(beanFactory));
     }
 

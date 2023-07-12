@@ -105,7 +105,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
     private void invokeInitMethods(String beanName, Object wrappedBean, BeanDefinition beanDefinition) throws Exception {
         if (wrappedBean instanceof InitializingBean) {
-            ((InitializingBean) wrappedBean).afterPropertiesSet(wrappedBean, beanName);
+            ((InitializingBean) wrappedBean).afterPropertiesSet();
         }
 
         String initMethodName = beanDefinition.getInitMethodName();

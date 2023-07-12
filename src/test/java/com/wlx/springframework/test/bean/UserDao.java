@@ -22,8 +22,8 @@ public class UserDao implements InitializingBean, DisposableBean {
     }
 
     @Override
-    public void afterPropertiesSet(Object bean, String beanName) throws Exception {
-        System.out.println("init：" + beanName);
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("init：" + UserDao.class.getSimpleName());
     }
 
     @Override

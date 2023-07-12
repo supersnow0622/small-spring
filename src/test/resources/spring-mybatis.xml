@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean id="sqlSessionFactory" class="com.wlx.springframework.mybatis.SqlSessionFactoryBean">
+        <property name="resource" value="mybatis-config-datasource.xml"/>
+    </bean>
+
+    <bean class="com.wlx.springframework.mybatis.MapperScannerConfigurer">
+        <!-- 注入sqlSessionFactory -->
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <!-- 给出需要扫描Dao接口包 -->
+        <property name="basePackage" value="com.wlx.springframework.test.dao"/>
+    </bean>
+
+</beans>

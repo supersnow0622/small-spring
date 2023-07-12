@@ -14,12 +14,14 @@ import com.wlx.springframework.aop.framework.JdkDynamicAopProxy;
 import com.wlx.springframework.aop.framework.ReflectiveMethodInvocation;
 import com.wlx.springframework.beans.PropertyValue;
 import com.wlx.springframework.beans.PropertyValues;
+import com.wlx.springframework.beans.factory.BeanFactory;
 import com.wlx.springframework.beans.factory.config.BeanDefinition;
 import com.wlx.springframework.beans.factory.config.BeanReference;
 import com.wlx.springframework.beans.factory.support.DefaultListableBeanFactory;
 import com.wlx.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import com.wlx.springframework.context.support.ClassPathXmlApplicationContext;
 import com.wlx.springframework.test.bean.*;
+import com.wlx.springframework.test.dao.IUserDao;
 import com.wlx.springframework.test.event.CustomEvent;
 import com.wlx.springframework.test.po.User;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -221,5 +223,13 @@ public class ApiTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    public void testSpringMybatis() {
+        BeanFactory beanFactory = new ClassPathXmlApplicationContext("classpath:spring-mybatis.xml");
+        IUserDao userDao = beanFactory.getBean("IUserDao", IUserDao.class);
+        User user = userDao.queryUserInfoById(1L);
+        System.out.println("测试结果：" + JSON.toJSONString(user));
     }
 }
