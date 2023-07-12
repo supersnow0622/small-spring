@@ -1,5 +1,10 @@
 package com.wlx.springframework.test;
 
+import com.alibaba.fastjson.JSON;
+import com.wlx.middleware.mybatis.Resources;
+import com.wlx.middleware.mybatis.SqlSession;
+import com.wlx.middleware.mybatis.SqlSessionFactory;
+import com.wlx.middleware.mybatis.SqlSessionFactoryBuilder;
 import com.wlx.springframework.aop.AdvisedSupport;
 import com.wlx.springframework.aop.MethodMatcher;
 import com.wlx.springframework.aop.TargetSource;
@@ -16,10 +21,13 @@ import com.wlx.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import com.wlx.springframework.context.support.ClassPathXmlApplicationContext;
 import com.wlx.springframework.test.bean.*;
 import com.wlx.springframework.test.event.CustomEvent;
+import com.wlx.springframework.test.po.User;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -194,5 +202,24 @@ public class ApiTest {
         Wife wife = applicationContext.getBean("wife", Wife.class);
         System.out.println("老公的媳妇：" + husband.queryWife());
         System.out.println("媳妇的老公：" + wife.queryHusband());
+    }
+
+    @Test
+    public void testMybatis() {
+        String resource = "mybatis-config-datasource.xml";
+        try {
+            Reader reader = Resources.getResourceAsReader(resource);
+            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+            SqlSession sqlSession = sqlSessionFactory.openSqlSession();
+            try {
+                User user = sqlSession.selectOne("com.wlx.springframework.test.dao.IUserDao.queryUserInfoById", 1L);
+                System.out.println(JSON.toJSON(user));
+            } finally {
+                sqlSession.close();
+                reader.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
